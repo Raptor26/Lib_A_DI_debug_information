@@ -39,6 +39,7 @@
 /******************************************************************************/
 //  Секция определения типов
 //------------------------------------------------------------------------------
+
 typedef struct {
     uint8_t beginMessageId;
     uint16_t messageType;
@@ -48,6 +49,7 @@ typedef struct {
     uint16_t crcMessage;
     char terminator;
 } __attribute__((__packed__)) DI_gyr_acc_mag_package_s;
+
 #define DI_GYR_ACC_MAG_PACKAGE_S_LENGHT                     sizeof(DI_gyr_acc_mag_package_s)
 #define DI_GYR_ACC_MAG_PACKAGE_S_CRC_BYTES_NUMB             2
 #define DI_GYR_ACC_MAG_PACKAGE_S_BYTES_NUMB_AFTER_CRC       1
@@ -55,20 +57,44 @@ typedef struct {
 
 
 //------------------------------------------------------------------------------
+
 typedef struct {
     uint8_t beginMessageId;
     uint8_t numbMessageBytes;
+
     float gyrArr[3];
     float accArr[3];
     float magArr[3];
     float quatArr[4];
     float eulerAnglArr[3];
-    uint8_t crc;
-} __attribute__((__packed__)) DI_package_for_serial_plot_s;
 
-#define DI_PACKAGE_FOR_SERIAL_PLOT_S_LENGHT                 sizeof(DI_package_for_serial_plot_s)
-#define DI_PACKAGE_FOR_SERIAL_PLOT_S_CRC_BYTES_NUMB         1
-#define DI_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC   0
+    uint8_t crc;
+} __attribute__((__packed__)) DI_inert_sens_package_for_serial_plot_s;
+
+#define DI_INERT_SENS_PACKAGE_FOR_SERIAL_PLOT_S_LENGHT                 sizeof(DI_inert_sens_package_for_serial_plot_s)
+#define DI_INERT_SENS_PACKAGE_FOR_SERIAL_PLOT_S_CRC_BYTES_NUMB         1
+#define DI_INERT_SENS_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC   0
+//------------------------------------------------------------------------------
+
+
+//------------------------------------------------------------------------------
+
+typedef struct {
+    uint8_t beginMessageId;
+    uint8_t numbMessageBytes;
+
+    float currentAbsoluteAngel;
+    float currentAngelInElectAngel;
+    float needAngelInElectAngel;
+    float needAngelAndCurrentAngelDiff;
+    float amplitudeCurrent;
+
+    uint8_t crc;
+} __attribute__((__packed__)) DI_vect_motor_control_package_for_serial_plot_s;
+
+#define DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_LENGHT                  sizeof (DI_vect_motor_control_package_for_serial_plot_s)
+#define DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_CRC_BYTES_NUMB          1
+#define DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC    0
 //------------------------------------------------------------------------------
 /******************************************************************************/
 
@@ -83,7 +109,7 @@ typedef struct {
 extern uint8_t DI_CopyGyrAccMagDataInStruct(DI_gyr_acc_mag_package_s *pPackageStruct,
         float *pGyrArr, float *pAccArr, float *pMagArr);
 
-extern uint8_t DI_CopyDataInStructForSerialPlot(DI_package_for_serial_plot_s *pPackageStruct,
+extern uint8_t DI_CopyInertSensDataInStructForSerialPlot(DI_inert_sens_package_for_serial_plot_s *pPackageStruct,
         float *pGyrArr, float *pAccArr, float *pMagArr,
         float *pQuatArr,
         float *pEulerAnglArr);

@@ -65,14 +65,18 @@ uint8_t DI_CopyGyrAccMagDataInStruct(DI_gyr_acc_mag_package_s *pPackageStruct,
     return 0;
 }
 
-uint8_t DI_CopyDataInStructForSerialPlot(DI_package_for_serial_plot_s *pPackageStruct,
-                                         float *pGyrArr, float *pAccArr, float *pMagArr,
-                                         float *pQuatArr,
-                                         float *pEulerAnglArr)
+uint8_t DI_CopyInertSensDataInStructForSerialPlot(
+                                                  DI_inert_sens_package_for_serial_plot_s *pPackageStruct,
+                                                  float *pGyrArr, float *pAccArr, float *pMagArr,
+                                                  float *pQuatArr,
+                                                  float *pEulerAnglArr)
 {
+    //  Start frame;
     pPackageStruct->beginMessageId = 0xAA;
 
-    pPackageStruct->numbMessageBytes = sizeof (DI_package_for_serial_plot_s)
+    //  Вычисление длинны покате данных без учета байта "beginMessageId", 
+    //  "numbMessageBytes" и "crc";
+    pPackageStruct->numbMessageBytes = sizeof (DI_inert_sens_package_for_serial_plot_s)
             - sizeof (pPackageStruct->beginMessageId)
             - sizeof (pPackageStruct->numbMessageBytes)
             - sizeof (pPackageStruct->crc);
@@ -104,8 +108,21 @@ uint8_t DI_CopyDataInStructForSerialPlot(DI_package_for_serial_plot_s *pPackageS
 
     //  Расчет контрольной суммы;
     pPackageStruct->crc = CRC_XOR_Crc8((uint8_t*) & pPackageStruct->gyrArr[0],
-                                       sizeof (DI_package_for_serial_plot_s) - 1);
+                                       sizeof (DI_inert_sens_package_for_serial_plot_s) - 1);
     return 0;
+}
+
+uint8_t DI_CopyVectMotorControlDataInStructForSerialPlot(DI_vect_motor_control_package_for_serial_plot_s *pPackageStruct)
+{
+    //  Start frame;
+    pPackageStruct->beginMessageId = 0xAA;
+
+    //  Вычисление длинны покате данных без учета байта "beginMessageId", 
+    //  "numbMessageBytes" и "crc";
+    pPackageStruct->numbMessageBytes = sizeof (DI_vect_motor_control_package_for_serial_plot_s)
+            - sizeof (pPackageStruct->beginMessageId)
+            - sizeof (pPackageStruct->numbMessageBytes)
+            - sizeof (pPackageStruct->crc);
 }
 /*============================================================================*/
 /******************************************************************************/
