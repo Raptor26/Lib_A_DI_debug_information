@@ -74,7 +74,7 @@ uint8_t DI_CopyInertSensDataInStructForSerialPlot(
     //  Start frame;
     pPackageStruct->beginMessageId = 0xAA;
 
-    //  Вычисление длинны покате данных без учета байта "beginMessageId", 
+    //  Вычисление длинны покате данных без учета байта "beginMessageId",
     //  "numbMessageBytes" и "crc";
     pPackageStruct->numbMessageBytes = sizeof (DI_inert_sens_package_for_serial_plot_s)
             - sizeof (pPackageStruct->beginMessageId)
@@ -112,17 +112,21 @@ uint8_t DI_CopyInertSensDataInStructForSerialPlot(
     return 0;
 }
 
-uint8_t DI_CopyVectMotorControlDataInStructForSerialPlot(DI_vect_motor_control_package_for_serial_plot_s *pPackageStruct)
+uint8_t DI_CopyVectMotorControlDataInStructForSerialPlot(
+                                                         DI_vect_motor_control_package_for_serial_plot_s *pPackageStruct,
+                                                         float currentAbsoluteAngel)
 {
     //  Start frame;
     pPackageStruct->beginMessageId = 0xAA;
 
-    //  Вычисление длинны покате данных без учета байта "beginMessageId", 
+    //  Вычисление длинны покате данных без учета байта "beginMessageId",
     //  "numbMessageBytes" и "crc";
     pPackageStruct->numbMessageBytes = sizeof (DI_vect_motor_control_package_for_serial_plot_s)
             - sizeof (pPackageStruct->beginMessageId)
             - sizeof (pPackageStruct->numbMessageBytes)
             - sizeof (pPackageStruct->crc);
+
+    pPackageStruct->currentAbsoluteAngel = currentAbsoluteAngel;
 }
 /*============================================================================*/
 /******************************************************************************/

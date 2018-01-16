@@ -106,6 +106,7 @@ typedef struct {
 
 /******************************************************************************/
 //  Секция прототипов глобальных функций
+//  Для отладки <системы ориентации>;
 extern uint8_t DI_CopyGyrAccMagDataInStruct(DI_gyr_acc_mag_package_s *pPackageStruct,
         float *pGyrArr, float *pAccArr, float *pMagArr);
 
@@ -113,6 +114,11 @@ extern uint8_t DI_CopyInertSensDataInStructForSerialPlot(DI_inert_sens_package_f
         float *pGyrArr, float *pAccArr, float *pMagArr,
         float *pQuatArr,
         float *pEulerAnglArr);
+
+//  Для отладки <векторного управления> 3-х фазным электродвигателем;
+extern uint8_t DI_CopyVectMotorControlDataInStructForSerialPlot(
+        DI_vect_motor_control_package_for_serial_plot_s *pPackageStruct,
+        float currentAbsoluteAngel);
 /******************************************************************************/
 
 
