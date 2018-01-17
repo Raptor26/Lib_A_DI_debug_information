@@ -114,7 +114,12 @@ uint8_t DI_CopyInertSensDataInStructForSerialPlot(
 
 uint8_t DI_CopyVectMotorControlDataInStructForSerialPlot(
                                                          DI_vect_motor_control_package_for_serial_plot_s *pPackageStruct,
-                                                         float currentAbsoluteAngel)
+                                                         float currentAbsoluteAngel,
+                                                         float currentAngelInElectAngel,
+                                                         float needAngelInElectAngel,
+                                                         float needAngelAndCurrentAngelDiff,
+                                                         float amplitudeCurrent,
+                                                         float needAbsoluteAngelAndCurrentAngelDiff)
 {
     //  Start frame;
     pPackageStruct->beginMessageId = 0xAA;
@@ -127,6 +132,11 @@ uint8_t DI_CopyVectMotorControlDataInStructForSerialPlot(
             - sizeof (pPackageStruct->crc);
 
     pPackageStruct->currentAbsoluteAngel = currentAbsoluteAngel;
+    pPackageStruct->needAngelElectAndCurrentAngelDiff = needAngelAndCurrentAngelDiff;
+    pPackageStruct->currentAngelInElectAngel = currentAngelInElectAngel;
+    pPackageStruct->needAngelInElectAngel = needAngelInElectAngel;
+    pPackageStruct->amplitudeCurrent = amplitudeCurrent;
+    pPackageStruct->needAbsoluteAngelAndCurrentAngelDiff = needAbsoluteAngelAndCurrentAngelDiff;
 }
 /*============================================================================*/
 /******************************************************************************/

@@ -86,8 +86,9 @@ typedef struct {
     float currentAbsoluteAngel;
     float currentAngelInElectAngel;
     float needAngelInElectAngel;
-    float needAngelAndCurrentAngelDiff;
+    float needAngelElectAndCurrentAngelDiff;
     float amplitudeCurrent;
+    float needAbsoluteAngelAndCurrentAngelDiff;
 
     uint8_t crc;
 } __attribute__((__packed__)) DI_vect_motor_control_package_for_serial_plot_s;
@@ -118,7 +119,12 @@ extern uint8_t DI_CopyInertSensDataInStructForSerialPlot(DI_inert_sens_package_f
 //  Для отладки <векторного управления> 3-х фазным электродвигателем;
 extern uint8_t DI_CopyVectMotorControlDataInStructForSerialPlot(
         DI_vect_motor_control_package_for_serial_plot_s *pPackageStruct,
-        float currentAbsoluteAngel);
+        float currentAbsoluteAngel,
+        float currentAngelInElectAngel,
+        float needAngelInElectAngel,
+        float needAngelAndCurrentAngelDiff,
+        float amplitudeCurrent,
+        float needAbsoluteAngelAndCurrentAngelDiff);
 /******************************************************************************/
 
 
