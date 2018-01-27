@@ -69,7 +69,9 @@ uint8_t DI_CopyInertSensDataInStructForSerialPlot(
                                                   DI_inert_sens_package_for_serial_plot_s *pPackageStruct,
                                                   float *pGyrArr, float *pAccArr, float *pMagArr,
                                                   float *pQuatArr,
-                                                  float *pEulerAnglArr)
+                                                  float *pEulerAnglArr,
+                                                  float *kProp,
+                                                  float *accNorm)
 {
     //  Start frame;
     pPackageStruct->beginMessageId = 0xAA;
@@ -106,6 +108,8 @@ uint8_t DI_CopyInertSensDataInStructForSerialPlot(
     pPackageStruct->eulerAnglArr[1] = *pEulerAnglArr++;
     pPackageStruct->eulerAnglArr[2] = *pEulerAnglArr;
 
+    pPackageStruct->kProp = *kProp;
+    pPackageStruct->accNorm = *accNorm;
     //  Расчет контрольной суммы;
     pPackageStruct->crc = CRC_XOR_Crc8((uint8_t*) & pPackageStruct->gyrArr[0],
                                        sizeof (DI_inert_sens_package_for_serial_plot_s) - 1);
@@ -137,6 +141,8 @@ uint8_t DI_CopyVectMotorControlDataInStructForSerialPlot(
     pPackageStruct->needAngelInElectAngel = needAngelInElectAngel;
     pPackageStruct->amplitudeCurrent = amplitudeCurrent;
     pPackageStruct->needAbsoluteAngelAndCurrentAngelDiff = needAbsoluteAngelAndCurrentAngelDiff;
+
+    return 1;
 }
 /*============================================================================*/
 /******************************************************************************/

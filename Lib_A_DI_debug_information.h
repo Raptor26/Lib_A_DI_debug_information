@@ -26,7 +26,7 @@
 /*============================================================================*/
 //  Внешние модули
 //          "Lib_A_CRC_cyclic_redundancy_check/Lib_A_CRC_cyclic_redundancy_check.h"
-#include    "Lib_A_CRC_cyclic_redundancy_check/Lib_A_CRC_cyclic_redundancy_check.h"
+#include    "../Lib_A_CRC_cyclic_redundancy_check/Lib_A_CRC_cyclic_redundancy_check.h"
 /*============================================================================*/
 /******************************************************************************/
 
@@ -67,6 +67,9 @@ typedef struct {
     float magArr[3];
     float quatArr[4];
     float eulerAnglArr[3];
+
+    float kProp;
+    float accNorm;
 
     uint8_t crc;
 } __attribute__((__packed__)) DI_inert_sens_package_for_serial_plot_s;
@@ -111,10 +114,13 @@ typedef struct {
 extern uint8_t DI_CopyGyrAccMagDataInStruct(DI_gyr_acc_mag_package_s *pPackageStruct,
         float *pGyrArr, float *pAccArr, float *pMagArr);
 
-extern uint8_t DI_CopyInertSensDataInStructForSerialPlot(DI_inert_sens_package_for_serial_plot_s *pPackageStruct,
+extern uint8_t DI_CopyInertSensDataInStructForSerialPlot(
+        DI_inert_sens_package_for_serial_plot_s *pPackageStruct,
         float *pGyrArr, float *pAccArr, float *pMagArr,
         float *pQuatArr,
-        float *pEulerAnglArr);
+        float *pEulerAnglArr,
+        float *kProp,
+        float *accNorm);
 
 //  Для отладки <векторного управления> 3-х фазным электродвигателем;
 extern uint8_t DI_CopyVectMotorControlDataInStructForSerialPlot(
