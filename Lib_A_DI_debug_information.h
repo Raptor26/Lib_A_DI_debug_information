@@ -15,6 +15,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 /*============================================================================*/
 
 
@@ -59,20 +60,61 @@ typedef struct {
 //------------------------------------------------------------------------------
 
 typedef struct {
+    /**
+     * Условие старта пакета данных "Start frame"
+     */
     uint8_t beginMessageId;
+
+    /**
+     * Количество полезных байтов данных;
+     */
     uint8_t numbMessageBytes;
 
+    /**
+     * Массив угловых скоростей по 3-м осям;
+     */
     float gyrArr[3];
+
+    /**
+     * Массив линейных ускрений по 3-м осям;
+     */
     float accArr[3];
+
+    /**
+     * Массив магнитного поля по 3-м осям;
+     */
     float magArr[3];
+
+    /**
+     * Массив компонент кватерниона;
+     */
     float quatArr[4];
+
+    /**
+     *  Массив углов Эйлера;
+     */
     float eulerAnglArr[3];
 
+    /**
+     * Коэффициент пропорциональной коррекции;
+     */
     float kProp;
+
+    /**
+     * Норма акселерометров
+     */
     float accNorm;
 
+    /**
+     * Массив дрейфа гироскопов по 3-м осям;
+     */
     float gyrBiasArr[3];
 
+    /**
+     * Контрольная сумма пакета данных без учета следующих полей структуры:
+     * - "beginMessageId"
+     * - "numbMessageBytes"
+     */
     uint8_t crc;
 } __attribute__((__packed__)) DI_inert_sens_package_for_serial_plot_s;
 
@@ -120,7 +162,7 @@ extern uint8_t DI_CopyInertSensDataInStructForSerialPlot(
         DI_inert_sens_package_for_serial_plot_s *pPackageStruct,
         float *pGyrArr, float *pAccArr, float *pMagArr,
         float *pQuatArr,
-        float *pEulerAnglArr,
+        float *pEulerAngleArr,
         float *kProp,
         float *accNorm,
         float *gyrBiasArr);

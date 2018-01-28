@@ -69,7 +69,7 @@ uint8_t DI_CopyInertSensDataInStructForSerialPlot(
                                                   DI_inert_sens_package_for_serial_plot_s *pPackageStruct,
                                                   float *pGyrArr, float *pAccArr, float *pMagArr,
                                                   float *pQuatArr,
-                                                  float *pEulerAnglArr,
+                                                  float *pEulerAngleArr,
                                                   float *kProp,
                                                   float *accNorm,
                                                   float *gyrBiasArr)
@@ -77,48 +77,41 @@ uint8_t DI_CopyInertSensDataInStructForSerialPlot(
     //  Start frame;
     pPackageStruct->beginMessageId = 0xAA;
 
-    //  Вычисление длинны покате данных без учета байта "beginMessageId",
+    //  Вычисление длинны пакета данных без учета байта "beginMessageId",
     //  "numbMessageBytes" и "crc";
     pPackageStruct->numbMessageBytes = sizeof (DI_inert_sens_package_for_serial_plot_s)
             - sizeof (pPackageStruct->beginMessageId)
             - sizeof (pPackageStruct->numbMessageBytes)
-            - sizeof (pPackageStruct->crc);
+            - sizeof (pPackageStruct->crc)
+            - DI_INERT_SENS_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC;
 
-    //  Копируем в структуру данные гироскопа;
-    pPackageStruct->gyrArr[0] = *pGyrArr++;
-    pPackageStruct->gyrArr[1] = *pGyrArr++;
-    pPackageStruct->gyrArr[2] = *pGyrArr;
+    //  Копирование в структуру данных гироскопа;
+    memcpy(pPackageStruct->gyrArr, pGyrArr, sizeof (float) * 3);
 
-    //  Копируем в структуру данные акселерометра;
-    pPackageStruct->accArr[0] = *pAccArr++;
-    pPackageStruct->accArr[1] = *pAccArr++;
-    pPackageStruct->accArr[2] = *pAccArr;
+    //  Копирование в структуру данных акселерометра;
+    memcpy(pPackageStruct->accArr, pAccArr, sizeof (float) * 3);
 
-    //  Копируем в структуру данные магнитометра;
-    pPackageStruct->magArr[0] = *pMagArr++;
-    pPackageStruct->magArr[1] = *pMagArr++;
-    pPackageStruct->magArr[2] = *pMagArr;
+    //  Копирование в структуру данных магнитометра;
+    memcpy(pPackageStruct->magArr, pMagArr, sizeof (float) * 3);
 
-    //  Копируем в стурктуру данные кватерниона;
-    pPackageStruct->quatArr[0] = *pQuatArr++;
-    pPackageStruct->quatArr[1] = *pQuatArr++;
-    pPackageStruct->quatArr[2] = *pQuatArr++;
-    pPackageStruct->quatArr[3] = *pQuatArr;
+    //  Копирование в структуру данных кватерниона;
+    memcpy(pPackageStruct->quatArr, pQuatArr, sizeof (float) * 4);
 
-    pPackageStruct->eulerAnglArr[0] = *pEulerAnglArr++;
-    pPackageStruct->eulerAnglArr[1] = *pEulerAnglArr++;
-    pPackageStruct->eulerAnglArr[2] = *pEulerAnglArr;
+    //  Копирование в стурктуру углов Эйлера;
+    memcpy(pPackageStruct->eulerAnglArr, pEulerAngleArr, sizeof (float) * 3);
 
     pPackageStruct->kProp = *kProp;
     pPackageStruct->accNorm = *accNorm;
 
-    pPackageStruct->gyrBiasArr[0] = *gyrBiasArr++;
-    pPackageStruct->gyrBiasArr[1] = *gyrBiasArr++;
-    pPackageStruct->gyrBiasArr[2] = *gyrBiasArr;
+    memcpy(pPackageStruct->gyrBiasArr, gyrBiasArr, sizeof (float) * 3);
 
     //  Расчет контрольной суммы;
     pPackageStruct->crc = CRC_XOR_Crc8((uint8_t*) & pPackageStruct->gyrArr[0],
-                                       sizeof (DI_inert_sens_package_for_serial_plot_s) - 1);
+                                       sizeof (DI_inert_sens_package_for_serial_plot_s)
+                                       - sizeof (pPackageStruct->beginMessageId)
+                                       - sizeof (pPackageStruct->numbMessageBytes)
+                                       - sizeof (pPackageStruct->crc)
+                                       - DI_INERT_SENS_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC);
     return 0;
 }
 
