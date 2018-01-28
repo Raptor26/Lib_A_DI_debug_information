@@ -71,7 +71,8 @@ uint8_t DI_CopyInertSensDataInStructForSerialPlot(
                                                   float *pQuatArr,
                                                   float *pEulerAnglArr,
                                                   float *kProp,
-                                                  float *accNorm)
+                                                  float *accNorm,
+                                                  float *gyrBiasArr)
 {
     //  Start frame;
     pPackageStruct->beginMessageId = 0xAA;
@@ -110,6 +111,11 @@ uint8_t DI_CopyInertSensDataInStructForSerialPlot(
 
     pPackageStruct->kProp = *kProp;
     pPackageStruct->accNorm = *accNorm;
+
+    pPackageStruct->gyrBiasArr[0] = *gyrBiasArr++;
+    pPackageStruct->gyrBiasArr[1] = *gyrBiasArr++;
+    pPackageStruct->gyrBiasArr[2] = *gyrBiasArr;
+
     //  Расчет контрольной суммы;
     pPackageStruct->crc = CRC_XOR_Crc8((uint8_t*) & pPackageStruct->gyrArr[0],
                                        sizeof (DI_inert_sens_package_for_serial_plot_s) - 1);

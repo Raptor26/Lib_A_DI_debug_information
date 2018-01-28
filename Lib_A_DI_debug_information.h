@@ -71,6 +71,8 @@ typedef struct {
     float kProp;
     float accNorm;
 
+    float gyrBiasArr[3];
+
     uint8_t crc;
 } __attribute__((__packed__)) DI_inert_sens_package_for_serial_plot_s;
 
@@ -120,7 +122,8 @@ extern uint8_t DI_CopyInertSensDataInStructForSerialPlot(
         float *pQuatArr,
         float *pEulerAnglArr,
         float *kProp,
-        float *accNorm);
+        float *accNorm,
+        float *gyrBiasArr);
 
 //  Для отладки <векторного управления> 3-х фазным электродвигателем;
 extern uint8_t DI_CopyVectMotorControlDataInStructForSerialPlot(
