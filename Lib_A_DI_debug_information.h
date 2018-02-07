@@ -61,57 +61,57 @@ typedef struct {
 
 typedef struct {
     /**
-     * Условие старта пакета данных "Start frame"
+	 * Условие старта пакета данных "Start frame"
      */
     uint8_t beginMessageId;
 
     /**
-     * Количество полезных байтов данных;
+	 * Количество полезных байтов данных;
      */
     uint8_t numbMessageBytes;
 
     /**
-     * Массив угловых скоростей по 3-м осям;
+	 * Массив угловых скоростей по 3-м осям;
      */
     float gyrArr[3];
 
     /**
-     * Массив линейных ускрений по 3-м осям;
+	 * Массив линейных ускрений по 3-м осям;
      */
     float accArr[3];
 
     /**
-     * Массив магнитного поля по 3-м осям;
+	 * Массив магнитного поля по 3-м осям;
      */
     float magArr[3];
 
     /**
-     * Массив компонент кватерниона;
+	 * Массив компонент кватерниона;
      */
     float quatArr[4];
 
     /**
-     *  Массив углов Эйлера;
+	 *  Массив углов Эйлера;
      */
     float eulerAnglArr[3];
 
     /**
-     * Коэффициент пропорциональной коррекции;
+	 * Коэффициент пропорциональной коррекции;
      */
     float kProp;
 
     /**
-     * Норма акселерометров
+	 * Норма акселерометров
      */
     float accNorm;
 
     /**
-     * Массив дрейфа гироскопов по 3-м осям;
+	 * Массив дрейфа гироскопов по 3-м осям;
      */
     float gyrBiasArr[3];
 
     /**
-     * Контрольная сумма пакета данных без учета следующих полей структуры:
+	 * Контрольная сумма пакета данных без учета следующих полей структуры:
      * - "beginMessageId"
      * - "numbMessageBytes"
      */
@@ -136,7 +136,8 @@ typedef struct {
     float needAngelElectAndCurrentAngelDiff;
     float amplitudeCurrent;
     float needAbsoluteAngelAndCurrentAngelDiff;
-
+	float angularSpeed;
+	float angularSpeed2;
     uint8_t crc;
 } __attribute__((__packed__)) DI_vect_motor_control_package_for_serial_plot_s;
 
@@ -155,27 +156,34 @@ typedef struct {
 /******************************************************************************/
 //  Секция прототипов глобальных функций
 //  Для отладки <системы ориентации>;
-extern uint8_t DI_CopyGyrAccMagDataInStruct(DI_gyr_acc_mag_package_s *pPackageStruct,
-        float *pGyrArr, float *pAccArr, float *pMagArr);
+extern uint8_t DI_CopyGyrAccMagDataInStruct(
+                                            DI_gyr_acc_mag_package_s *pPackageStruct,
+                                            float *pGyrArr,
+                                            float *pAccArr,
+                                            float *pMagArr);
 
 extern uint8_t DI_CopyInertSensDataInStructForSerialPlot(
-        DI_inert_sens_package_for_serial_plot_s *pPackageStruct,
-        float *pGyrArr, float *pAccArr, float *pMagArr,
-        float *pQuatArr,
-        float *pEulerAngleArr,
-        float *kProp,
-        float *accNorm,
-        float *gyrBiasArr);
+                                                         DI_inert_sens_package_for_serial_plot_s *pPackageStruct,
+                                                         float *pGyrArr,
+                                                         float *pAccArr,
+                                                         float *pMagArr,
+                                                         float *pQuatArr,
+                                                         float *pEulerAngleArr,
+                                                         float *kProp,
+                                                         float *accNorm,
+                                                         float *gyrBiasArr);
 
 //  Для отладки <векторного управления> 3-х фазным электродвигателем;
 extern uint8_t DI_CopyVectMotorControlDataInStructForSerialPlot(
-        DI_vect_motor_control_package_for_serial_plot_s *pPackageStruct,
-        float currentAbsoluteAngel,
-        float currentAngelInElectAngel,
-        float needAngelInElectAngel,
-        float needAngelAndCurrentAngelDiff,
-        float amplitudeCurrent,
-        float needAbsoluteAngelAndCurrentAngelDiff);
+                                                                DI_vect_motor_control_package_for_serial_plot_s *pPackageStruct,
+                                                                float currentAbsoluteAngel,
+                                                                float currentAngelInElectAngel,
+                                                                float needAngelInElectAngel,
+                                                                float needAngelAndCurrentAngelDiff,
+                                                                float amplitudeCurrent,
+                                                                float needAbsoluteAngelAndCurrentAngelDiff,
+                                                                float angularSpeed,
+                                                                float angularSpeed2);
 /******************************************************************************/
 
 
