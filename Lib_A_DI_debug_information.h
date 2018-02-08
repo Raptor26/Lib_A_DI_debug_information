@@ -145,6 +145,29 @@ typedef struct {
 #define DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_CRC_BYTES_NUMB          1
 #define DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC    0
 //------------------------------------------------------------------------------
+
+typedef struct
+{
+	uint8_t beginMessageId;
+	uint8_t numbMessageBytes;
+
+	float dataWithOutFilt;
+	float iir_lowPass10Hz;
+	float iir_lowPass50Hz;
+	float iir_lowPass100Hz;
+	float iir_lowPass150Hz;
+	float iir_lowPass200Hz;
+	float iir_lowPass250Hz;
+	float iir_lowPass300Hz;
+	float iir_lowPass350Hz;
+	float iir_lowPass400Hz;
+
+	uint8_t crc;
+}__attribute__((__packed__)) DI_win_filter_comp_for_serial_plot_s;
+
+#define DI_WIN_FILTER_COMP_FOR_SERIAL_PLOT_S_LENGHT				sizeof (DI_win_filter_comp_for_serial_plot_s)
+#define DI_WIN_FILTER_COMP_FOR_SERIAL_PLOT_S_CRC_BYTES_NUMB		1
+#define DI_WIN_FILTER_COMP_FOR_SERIAL_PLOT_S_BYTES_AFTER_CRC	0
 /******************************************************************************/
 
 
@@ -184,6 +207,19 @@ extern uint8_t DI_CopyVectMotorControlDataInStructForSerialPlot(
                                                                 float needAbsoluteAngelAndCurrentAngelDiff,
                                                                 float angularSpeed,
                                                                 float angularSpeed2);
+
+uint8_t DI_CopyWinFiltDataInStructForSerialPlot(
+                                                DI_win_filter_comp_for_serial_plot_s *pPackageStruct,
+                                                float dataWithOutFilt,
+                                                float iir_lowPass10Hz,
+                                                float iir_lowPass50Hz,
+                                                float iir_lowPass100Hz,
+                                                float iir_lowPass150Hz,
+                                                float iir_lowPass200Hz,
+                                                float iir_lowPass250Hz,
+                                                float iir_lowPass300Hz,
+                                                float iir_lowPass350Hz,
+                                                float iir_lowPass400Hz);
 /******************************************************************************/
 
 

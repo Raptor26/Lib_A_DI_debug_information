@@ -147,6 +147,49 @@ uint8_t DI_CopyVectMotorControlDataInStructForSerialPlot(
 
     return 1;
 }
+
+uint8_t DI_CopyWinFiltDataInStructForSerialPlot(DI_win_filter_comp_for_serial_plot_s *pPackageStruct,
+                                                float dataWithOutFilt,
+                                                float iir_lowPass10Hz,
+                                                float iir_lowPass50Hz,
+                                                float iir_lowPass100Hz,
+                                                float iir_lowPass150Hz,
+                                                float iir_lowPass200Hz,
+                                                float iir_lowPass250Hz,
+                                                float iir_lowPass300Hz,
+                                                float iir_lowPass350Hz,
+                                                float iir_lowPass400Hz)
+{
+	//  Start frame;
+	pPackageStruct->beginMessageId = 0xAA;
+
+	//  Вычисление длинны пакета данных без учета байта "beginMessageId",
+	//  "numbMessageBytes" и "crc";
+	pPackageStruct->numbMessageBytes = sizeof(DI_win_filter_comp_for_serial_plot_s)
+	                                   - sizeof(pPackageStruct->beginMessageId)
+	                                   - sizeof(pPackageStruct->numbMessageBytes)
+	                                   - sizeof(pPackageStruct->crc)
+	                                   - DI_WIN_FILTER_COMP_FOR_SERIAL_PLOT_S_BYTES_AFTER_CRC;
+
+	pPackageStruct->dataWithOutFilt = dataWithOutFilt;
+	pPackageStruct->iir_lowPass10Hz = iir_lowPass10Hz;
+	pPackageStruct->iir_lowPass50Hz = iir_lowPass50Hz;
+	pPackageStruct->iir_lowPass100Hz = iir_lowPass100Hz;
+	pPackageStruct->iir_lowPass150Hz = iir_lowPass150Hz;
+	pPackageStruct->iir_lowPass200Hz = iir_lowPass200Hz;
+	pPackageStruct->iir_lowPass250Hz = iir_lowPass250Hz;
+	pPackageStruct->iir_lowPass300Hz = iir_lowPass300Hz;
+	pPackageStruct->iir_lowPass350Hz = iir_lowPass350Hz;
+	pPackageStruct->iir_lowPass400Hz = iir_lowPass400Hz;
+
+	//  Расчет контрольной суммы;
+	pPackageStruct->crc = CRC_XOR_Crc8((uint8_t*) &pPackageStruct->iir_lowPass100Hz,
+	                                   sizeof(DI_win_filter_comp_for_serial_plot_s)
+	                                   - sizeof(pPackageStruct->beginMessageId)
+	                                   - sizeof(pPackageStruct->numbMessageBytes)
+	                                   - sizeof(pPackageStruct->crc)
+	                                   - DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC);
+}
 /*============================================================================*/
 /******************************************************************************/
 
