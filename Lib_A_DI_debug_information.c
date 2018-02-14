@@ -131,10 +131,11 @@ uint8_t DI_CopyVectMotorControlDataInStructForSerialPlot(
 
 	//  Вычисление длинны покате данных без учета байта "beginMessageId",
 	//  "numbMessageBytes" и "crc";
-    pPackageStruct->numbMessageBytes = sizeof (DI_vect_motor_control_package_for_serial_plot_s)
-            - sizeof (pPackageStruct->beginMessageId)
-            - sizeof (pPackageStruct->numbMessageBytes)
-            - sizeof (pPackageStruct->crc);
+	pPackageStruct->numbMessageBytes = sizeof(DI_vect_motor_control_package_for_serial_plot_s)
+	                                   - sizeof(pPackageStruct->beginMessageId)
+	                                   - sizeof(pPackageStruct->numbMessageBytes)
+	                                   - sizeof(pPackageStruct->crc)
+	                                   - DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC;
 
 	pPackageStruct->currentAbsoluteAngel = currentAbsoluteAngel;
 	pPackageStruct->needAngelElectAndCurrentAngelDiff = needAngelAndCurrentAngelDiff;
@@ -144,6 +145,14 @@ uint8_t DI_CopyVectMotorControlDataInStructForSerialPlot(
 	pPackageStruct->needAbsoluteAngelAndCurrentAngelDiff = needAbsoluteAngelAndCurrentAngelDiff;
 	pPackageStruct->angularSpeed = angularSpeed;
 	pPackageStruct->angularSpeed2 = angularSpeed2;
+
+	//  Расчет контрольной суммы;
+//	pPackageStruct->crc = CRC_XOR_Crc8((uint8_t*) &pPackageStruct->currentAbsoluteAngel,
+//	                                   sizeof(DI_vect_motor_control_package_for_serial_plot_s)
+//	                                   - sizeof(pPackageStruct->beginMessageId)
+//	                                   - sizeof(pPackageStruct->numbMessageBytes)
+//	                                   - sizeof(pPackageStruct->crc)
+//	                                   - DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC);
 
     return 1;
 }
@@ -189,6 +198,47 @@ uint8_t DI_CopyWinFiltDataInStructForSerialPlot(DI_win_filter_comp_for_serial_pl
 	                                   - sizeof(pPackageStruct->numbMessageBytes)
 	                                   - sizeof(pPackageStruct->crc)
 	                                   - DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC);
+}
+
+size_t DI_CopyDataForSerialPlot_f32(DI_data_for_serial_plot_s *pPackageStruct,
+                                     ...)
+{
+//	//  Start frame;
+//	pPackageStruct->beginMessageId = 0xAA;
+//
+//	//  Вычисление длинны пакета данных без учета байта "beginMessageId",
+//	//  "numbMessageBytes" и "crc";
+//	pPackageStruct->numbMessageBytes = sizeof(DI_win_filter_comp_for_serial_plot_s)
+//	                                   - sizeof(pPackageStruct->beginMessageId)
+//	                                   - sizeof(pPackageStruct->numbMessageBytes)
+//	                                   - sizeof(pPackageStruct->crc);
+//
+//	//	Объявление указателя на входные аргументы;
+//	va_list pParam;
+//
+//	//	Инициализация указателя;
+//	//	(Указывает на начало структуры или на следующий за структурой параметр???)
+//	va_start(pParam, pPackageStruct);
+//
+//	//	Инициализация указателя массива данных;
+//	float *pStruct;
+//	pStruct = pPackageStruct->dataArr;
+//
+//	float varTemp = va_arg(pParam, float);
+//
+//	//	Счетчик байтов, количество которых необходимо отправить в программу "SerialPlot"
+//	size_t bytesCount = 0;
+//
+//	do
+//	{
+//		*pStruct++ = varTemp;
+//		bytesCount += sizeof(float);
+//	}
+//	while (varTemp = va_arg(pParam, float));
+//
+//	va_end(pParam);
+//
+//	return bytesCount;
 }
 /*============================================================================*/
 /******************************************************************************/

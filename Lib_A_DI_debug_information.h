@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <stdarg.h>
 /*============================================================================*/
 
 
@@ -26,8 +27,8 @@
 
 /*============================================================================*/
 //  Внешние модули
-//          "Lib_A_CRC_cyclic_redundancy_check/Lib_A_CRC_cyclic_redundancy_check.h"
-#include    "../Lib_A_CRC_cyclic_redundancy_check/Lib_A_CRC_cyclic_redundancy_check.h"
+//      	"../Lib_A_CRC_cyclic_redundancy_check/Lib_A_CRC_cyclic_redundancy_check.h"
+#include 	"../Lib_A_CRC_cyclic_redundancy_check/Lib_A_CRC_cyclic_redundancy_check.h"
 /*============================================================================*/
 /******************************************************************************/
 
@@ -59,11 +60,12 @@ typedef struct {
 
 //------------------------------------------------------------------------------
 
-typedef struct {
-    /**
+typedef struct
+{
+	/**
 	 * Условие старта пакета данных "Start frame"
-     */
-    uint8_t beginMessageId;
+	 */
+	uint8_t beginMessageId;
 
     /**
 	 * Количество полезных байтов данных;
@@ -146,6 +148,7 @@ typedef struct {
 #define DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC    0
 //------------------------------------------------------------------------------
 
+//------------------------------------------------------------------------------
 typedef struct
 {
 	uint8_t beginMessageId;
@@ -168,6 +171,19 @@ typedef struct
 #define DI_WIN_FILTER_COMP_FOR_SERIAL_PLOT_S_LENGHT				sizeof (DI_win_filter_comp_for_serial_plot_s)
 #define DI_WIN_FILTER_COMP_FOR_SERIAL_PLOT_S_CRC_BYTES_NUMB		1
 #define DI_WIN_FILTER_COMP_FOR_SERIAL_PLOT_S_BYTES_AFTER_CRC	0
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+typedef struct
+{
+	uint8_t beginMessageId;
+	uint8_t numbMessageBytes;
+
+	float dataArr[40];
+
+	uint8_t crc;
+}__attribute__((__packed__)) DI_data_for_serial_plot_s;
+//------------------------------------------------------------------------------
 /******************************************************************************/
 
 
