@@ -182,7 +182,6 @@ typedef struct
 	float dataArr[40];
 
 	uint8_t crc;
-	double endStruct;
 }__attribute__((__packed__)) DI_data_for_serial_plot_s;
 //------------------------------------------------------------------------------
 /******************************************************************************/
@@ -225,7 +224,7 @@ extern uint8_t DI_CopyVectMotorControlDataInStructForSerialPlot(
                                                                 float angularSpeed,
                                                                 float angularSpeed2);
 
-uint8_t DI_CopyWinFiltDataInStructForSerialPlot(
+extern uint8_t DI_CopyWinFiltDataInStructForSerialPlot(
                                                 DI_win_filter_comp_for_serial_plot_s *pPackageStruct,
                                                 float dataWithOutFilt,
                                                 float iir_lowPass10Hz,
@@ -237,6 +236,9 @@ uint8_t DI_CopyWinFiltDataInStructForSerialPlot(
                                                 float iir_lowPass300Hz,
                                                 float iir_lowPass350Hz,
                                                 float iir_lowPass400Hz);
+extern size_t DI_CopyDataForSerialPlot_f32(DI_data_for_serial_plot_s *pStruct,
+                                           float data,
+                                           ...);
 /******************************************************************************/
 
 

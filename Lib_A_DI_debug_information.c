@@ -200,28 +200,38 @@ uint8_t DI_CopyWinFiltDataInStructForSerialPlot(DI_win_filter_comp_for_serial_pl
 	                                   - DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC);
 }
 
-double DI_CopyDataForSerialPlot_f32(int num,
+size_t DI_CopyDataForSerialPlot_f32(DI_data_for_serial_plot_s *pStruct,
+                                    float data,
                                      ...)
 {
+	pStruct->beginMessageId = 0xAA;
 
-	//	Объявление указателя на входные аргументы;
-	va_list pParam;
-	double testsum = 0;
-	double t;
+	//	Объявление указателя переменное число параметров функции;
+	va_list pInParam;
 
 	//	Инициализация указателя;
-	//	(Указывает на начало структуры или на следующий за структурой параметр???)
-	va_start(pParam, num);
-//	pParam++;
+	va_start(pInParam, data);
 
-	for (; num; num--)
+	float dataTmp = data;
+
+	// Счетчик каличества переменных типа "float";
+	size_t i = 0;
+
+	while (dataTmp != (float) 0xFFFFFFFF)
 	{
-		testsum += va_arg(pParam, double);
+		pStruct->dataArr[i] = dataTmp;
+		i++;
+		dataTmp = va_arg(pInParam, double);
 	}
 
-	va_end(pParam);
+	pStruct->numbMessageBytes = i * 4;
 
-	return testsum;
+	va_end(pInParam);
+
+	// Возвращаем количество байт, которое необходимо отправить по шине данных;
+	return (i * 4)
+	       + sizeof(pStruct->beginMessageId)
+	       + sizeof(pStruct->numbMessageBytes);
 }
 /*============================================================================*/
 /******************************************************************************/
