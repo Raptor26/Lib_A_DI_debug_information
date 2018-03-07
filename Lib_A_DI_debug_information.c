@@ -35,28 +35,28 @@
 uint8_t DI_CopyGyrAccMagDataInStruct(DI_gyr_acc_mag_package_s *pPackageStruct,
                                      float *pGyrArr, float *pAccArr, float *pMagArr)
 {
-	//  Условием начала пакета данных является код "0xAA";
+    //  Условием начала пакета данных является код "0xAA";
     pPackageStruct->beginMessageId = 0xAA;
 
-	//  Идентификатор данного сообщения равен "1";
+    //  Идентификатор данного сообщения равен "1";
     pPackageStruct->messageType = 1;
 
-	//  Копируем в структуру данные гироскопа;
+    //  Копируем в структуру данные гироскопа;
     pPackageStruct->gyrArr[0] = *pGyrArr++;
     pPackageStruct->gyrArr[1] = *pGyrArr++;
     pPackageStruct->gyrArr[2] = *pGyrArr;
 
-	//  Копируем в структуру данные акселерометра;
+    //  Копируем в структуру данные акселерометра;
     pPackageStruct->accArr[0] = *pAccArr++;
     pPackageStruct->accArr[1] = *pAccArr++;
     pPackageStruct->accArr[2] = *pAccArr;
 
-	//  Копируем в структуру данные магнитометра;
+    //  Копируем в структуру данные магнитометра;
     pPackageStruct->magArr[0] = *pMagArr++;
     pPackageStruct->magArr[1] = *pMagArr++;
     pPackageStruct->magArr[2] = *pMagArr;
 
-	//  Считаем контрольную сумму данных;
+    //  Считаем контрольную сумму данных;
     pPackageStruct->crcMessage = CRC_XOR_CCITT_Poly0x1021_Crc16((uint8_t*) pPackageStruct,
                                                                 DI_GYR_ACC_MAG_PACKAGE_S_LENGHT
                                                                 - DI_GYR_ACC_MAG_PACKAGE_S_CRC_BYTES_NUMB
@@ -77,27 +77,27 @@ uint8_t DI_CopyInertSensDataInStructForSerialPlot(
     //  Start frame;
     pPackageStruct->beginMessageId = 0xAA;
 
-	//  Вычисление длинны пакета данных без учета байта "beginMessageId",
-	//  "numbMessageBytes" и "crc";
+    //  Вычисление длинны пакета данных без учета байта "beginMessageId",
+    //  "numbMessageBytes" и "crc";
     pPackageStruct->numbMessageBytes = sizeof (DI_inert_sens_package_for_serial_plot_s)
             - sizeof (pPackageStruct->beginMessageId)
             - sizeof (pPackageStruct->numbMessageBytes)
             - sizeof (pPackageStruct->crc)
             - DI_INERT_SENS_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC;
 
-	//  Копирование в структуру данных гироскопа;
+    //  Копирование в структуру данных гироскопа;
     memcpy(pPackageStruct->gyrArr, pGyrArr, sizeof (float) * 3);
 
-	//  Копирование в структуру данных акселерометра;
+    //  Копирование в структуру данных акселерометра;
     memcpy(pPackageStruct->accArr, pAccArr, sizeof (float) * 3);
 
-	//  Копирование в структуру данных магнитометра;
+    //  Копирование в структуру данных магнитометра;
     memcpy(pPackageStruct->magArr, pMagArr, sizeof (float) * 3);
 
-	//  Копирование в структуру данных кватерниона;
+    //  Копирование в структуру данных кватерниона;
     memcpy(pPackageStruct->quatArr, pQuatArr, sizeof (float) * 4);
 
-	//  Копирование в стурктуру углов Эйлера;
+    //  Копирование в стурктуру углов Эйлера;
     memcpy(pPackageStruct->eulerAnglArr, pEulerAngleArr, sizeof (float) * 3);
 
     pPackageStruct->kProp = *kProp;
@@ -105,7 +105,7 @@ uint8_t DI_CopyInertSensDataInStructForSerialPlot(
 
     memcpy(pPackageStruct->gyrBiasArr, gyrBiasArr, sizeof (float) * 3);
 
-	//  Расчет контрольной суммы;
+    //  Расчет контрольной суммы;
     pPackageStruct->crc = CRC_XOR_Crc8((uint8_t*) & pPackageStruct->gyrArr[0],
                                        sizeof (DI_inert_sens_package_for_serial_plot_s)
                                        - sizeof (pPackageStruct->beginMessageId)
@@ -129,30 +129,30 @@ uint8_t DI_CopyVectMotorControlDataInStructForSerialPlot(
     //  Start frame;
     pPackageStruct->beginMessageId = 0xAA;
 
-	//  Вычисление длинны покате данных без учета байта "beginMessageId",
-	//  "numbMessageBytes" и "crc";
-	pPackageStruct->numbMessageBytes = sizeof(DI_vect_motor_control_package_for_serial_plot_s)
-	                                   - sizeof(pPackageStruct->beginMessageId)
-	                                   - sizeof(pPackageStruct->numbMessageBytes)
-	                                   - sizeof(pPackageStruct->crc)
-	                                   - DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC;
+    //  Вычисление длинны покате данных без учета байта "beginMessageId",
+    //  "numbMessageBytes" и "crc";
+    pPackageStruct->numbMessageBytes = sizeof (DI_vect_motor_control_package_for_serial_plot_s)
+            - sizeof (pPackageStruct->beginMessageId)
+            - sizeof (pPackageStruct->numbMessageBytes)
+            - sizeof (pPackageStruct->crc)
+            - DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC;
 
-	pPackageStruct->currentAbsoluteAngel = currentAbsoluteAngel;
-	pPackageStruct->needAngelElectAndCurrentAngelDiff = needAngelAndCurrentAngelDiff;
-	pPackageStruct->currentAngelInElectAngel = currentAngelInElectAngel;
-	pPackageStruct->needAngelInElectAngel = needAngelInElectAngel;
-	pPackageStruct->amplitudeCurrent = amplitudeCurrent;
-	pPackageStruct->needAbsoluteAngelAndCurrentAngelDiff = needAbsoluteAngelAndCurrentAngelDiff;
-	pPackageStruct->angularSpeed = angularSpeed;
-	pPackageStruct->angularSpeed2 = angularSpeed2;
+    pPackageStruct->currentAbsoluteAngel = currentAbsoluteAngel;
+    pPackageStruct->needAngelElectAndCurrentAngelDiff = needAngelAndCurrentAngelDiff;
+    pPackageStruct->currentAngelInElectAngel = currentAngelInElectAngel;
+    pPackageStruct->needAngelInElectAngel = needAngelInElectAngel;
+    pPackageStruct->amplitudeCurrent = amplitudeCurrent;
+    pPackageStruct->needAbsoluteAngelAndCurrentAngelDiff = needAbsoluteAngelAndCurrentAngelDiff;
+    pPackageStruct->angularSpeed = angularSpeed;
+    pPackageStruct->angularSpeed2 = angularSpeed2;
 
-	//  Расчет контрольной суммы;
-//	pPackageStruct->crc = CRC_XOR_Crc8((uint8_t*) &pPackageStruct->currentAbsoluteAngel,
-//	                                   sizeof(DI_vect_motor_control_package_for_serial_plot_s)
-//	                                   - sizeof(pPackageStruct->beginMessageId)
-//	                                   - sizeof(pPackageStruct->numbMessageBytes)
-//	                                   - sizeof(pPackageStruct->crc)
-//	                                   - DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC);
+    //  Расчет контрольной суммы;
+    //	pPackageStruct->crc = CRC_XOR_Crc8((uint8_t*) &pPackageStruct->currentAbsoluteAngel,
+    //	                                   sizeof(DI_vect_motor_control_package_for_serial_plot_s)
+    //	                                   - sizeof(pPackageStruct->beginMessageId)
+    //	                                   - sizeof(pPackageStruct->numbMessageBytes)
+    //	                                   - sizeof(pPackageStruct->crc)
+    //	                                   - DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC);
 
     return 1;
 }
@@ -169,69 +169,70 @@ uint8_t DI_CopyWinFiltDataInStructForSerialPlot(DI_win_filter_comp_for_serial_pl
                                                 float iir_lowPass350Hz,
                                                 float iir_lowPass400Hz)
 {
-	//  Start frame;
-	pPackageStruct->beginMessageId = 0xAA;
+    //  Start frame;
+    pPackageStruct->beginMessageId = 0xAA;
 
-	//  Вычисление длинны пакета данных без учета байта "beginMessageId",
-	//  "numbMessageBytes" и "crc";
-	pPackageStruct->numbMessageBytes = sizeof(DI_win_filter_comp_for_serial_plot_s)
-	                                   - sizeof(pPackageStruct->beginMessageId)
-	                                   - sizeof(pPackageStruct->numbMessageBytes)
-	                                   - sizeof(pPackageStruct->crc)
-	                                   - DI_WIN_FILTER_COMP_FOR_SERIAL_PLOT_S_BYTES_AFTER_CRC;
+    //  Вычисление длинны пакета данных без учета байта "beginMessageId",
+    //  "numbMessageBytes" и "crc";
+    pPackageStruct->numbMessageBytes = sizeof (DI_win_filter_comp_for_serial_plot_s)
+            - sizeof (pPackageStruct->beginMessageId)
+            - sizeof (pPackageStruct->numbMessageBytes)
+            - sizeof (pPackageStruct->crc)
+            - DI_WIN_FILTER_COMP_FOR_SERIAL_PLOT_S_BYTES_AFTER_CRC;
 
-	pPackageStruct->dataWithOutFilt = dataWithOutFilt;
-	pPackageStruct->iir_lowPass10Hz = iir_lowPass10Hz;
-	pPackageStruct->iir_lowPass50Hz = iir_lowPass50Hz;
-	pPackageStruct->iir_lowPass100Hz = iir_lowPass100Hz;
-	pPackageStruct->iir_lowPass150Hz = iir_lowPass150Hz;
-	pPackageStruct->iir_lowPass200Hz = iir_lowPass200Hz;
-	pPackageStruct->iir_lowPass250Hz = iir_lowPass250Hz;
-	pPackageStruct->iir_lowPass300Hz = iir_lowPass300Hz;
-	pPackageStruct->iir_lowPass350Hz = iir_lowPass350Hz;
-	pPackageStruct->iir_lowPass400Hz = iir_lowPass400Hz;
+    pPackageStruct->dataWithOutFilt = dataWithOutFilt;
+    pPackageStruct->iir_lowPass10Hz = iir_lowPass10Hz;
+    pPackageStruct->iir_lowPass50Hz = iir_lowPass50Hz;
+    pPackageStruct->iir_lowPass100Hz = iir_lowPass100Hz;
+    pPackageStruct->iir_lowPass150Hz = iir_lowPass150Hz;
+    pPackageStruct->iir_lowPass200Hz = iir_lowPass200Hz;
+    pPackageStruct->iir_lowPass250Hz = iir_lowPass250Hz;
+    pPackageStruct->iir_lowPass300Hz = iir_lowPass300Hz;
+    pPackageStruct->iir_lowPass350Hz = iir_lowPass350Hz;
+    pPackageStruct->iir_lowPass400Hz = iir_lowPass400Hz;
 
-	//  Расчет контрольной суммы;
-	pPackageStruct->crc = CRC_XOR_Crc8((uint8_t*) &pPackageStruct->iir_lowPass100Hz,
-	                                   sizeof(DI_win_filter_comp_for_serial_plot_s)
-	                                   - sizeof(pPackageStruct->beginMessageId)
-	                                   - sizeof(pPackageStruct->numbMessageBytes)
-	                                   - sizeof(pPackageStruct->crc)
-	                                   - DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC);
+    //  Расчет контрольной суммы;
+    pPackageStruct->crc = CRC_XOR_Crc8((uint8_t*) & pPackageStruct->iir_lowPass100Hz,
+                                       sizeof (DI_win_filter_comp_for_serial_plot_s)
+                                       - sizeof (pPackageStruct->beginMessageId)
+                                       - sizeof (pPackageStruct->numbMessageBytes)
+                                       - sizeof (pPackageStruct->crc)
+                                       - DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC);
+    return 0;
 }
 
 size_t DI_CopyDataForSerialPlot_f32(DI_data_for_serial_plot_s *pStruct,
                                     float data,
-                                     ...)
+                                    ...)
 {
-	pStruct->beginMessageId = 0xAA;
+    pStruct->beginMessageId = 0xAA;
 
-	//	Объявление указателя переменное число параметров функции;
-	va_list pInParam;
+    //	Объявление указателя переменное число параметров функции;
+    va_list pInParam;
 
-	//	Инициализация указателя;
-	va_start(pInParam, data);
+    //	Инициализация указателя;
+    va_start(pInParam, data);
 
-	float dataTmp = data;
+    float dataTmp = data;
 
-	// Счетчик каличества переменных типа "float";
-	size_t i = 0;
+    // Счетчик каличества переменных типа "float";
+    size_t i = 0;
 
-	while (dataTmp != (float) 0xFFFFFFFF)
-	{
-		pStruct->dataArr[i] = dataTmp;
-		i++;
-		dataTmp = va_arg(pInParam, double);
-	}
+    while (dataTmp != (float) 0xFFFFFFFF)
+    {
+        pStruct->dataArr[i] = dataTmp;
+        i++;
+        dataTmp = va_arg(pInParam, double);
+    }
 
-	pStruct->numbMessageBytes = i * 4;
+    pStruct->numbMessageBytes = i * 4;
 
-	va_end(pInParam);
+    va_end(pInParam);
 
-	// Возвращаем количество байт, которое необходимо отправить по шине данных;
-	return (i * 4)
-	       + sizeof(pStruct->beginMessageId)
-	       + sizeof(pStruct->numbMessageBytes);
+    // Возвращаем количество байт, которое необходимо отправить по шине данных;
+    return (i * 4)
+            + sizeof (pStruct->beginMessageId)
+            + sizeof (pStruct->numbMessageBytes);
 }
 /*============================================================================*/
 /******************************************************************************/
