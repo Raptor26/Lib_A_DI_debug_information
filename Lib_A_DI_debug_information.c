@@ -200,6 +200,19 @@ uint8_t DI_CopyWinFiltDataInStructForSerialPlot(DI_win_filter_comp_for_serial_pl
 	                                   - DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC);
 }
 
+/**
+ * @brief	Функция выполняет копирование переменных в структуру типа
+ * 			"DI_data_for_serial_plot_s" для дальнейшей отправки в программу "SerialPlot"
+ * @param	*pStruct:	Указатель на структуру в которую необходимо скопировать
+ * 						переменные;
+ * @param	data: 	Переменная которую необходимо скопировать в стуктуру
+ * 					типа "DI_data_for_serial_plot_s";
+ * @param	...		Переменное число параметров, которое необходимо скопировать
+ * 					в стуктуру типа "DI_data_for_serial_plot_s";
+ * @param	0xFFFFFFFF:	Терминальный символ, по которому функция определяет
+ * 						конец передаваемых в функцию параметров;
+ * @return	Количество байт данных, которое необходимо отправить в программу "SerialPlot"
+ */
 size_t DI_CopyDataForSerialPlot_f32(DI_data_for_serial_plot_s *pStruct,
                                     float data,
                                      ...)
