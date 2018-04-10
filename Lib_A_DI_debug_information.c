@@ -25,14 +25,14 @@
  * @brief	Функция выполняет копирование переменных в структуру типа
  * 			"DI_data_for_serial_plot_s" для дальнейшей отправки в программу "SerialPlot"
  * @param	*pStruct:	Указатель на структуру в которую необходимо скопировать
- * 						переменные;
+ * 						переменные
  * @param	data: 	Переменная которую необходимо скопировать в стуктуру
- * 					типа "DI_data_for_serial_plot_s";
+ * 					типа "DI_data_for_serial_plot_s"
  * @param	...		Переменное число параметров, которое необходимо скопировать
- * 					в стуктуру типа "DI_data_for_serial_plot_s";
+ * 					в стуктуру типа "DI_data_for_serial_plot_s"
  * @param	0xAAAAAAAA:	Терминальный символ, по которому функция определяет
- * 						конец передаваемых в функцию параметров;
- * @return	Количество байт данных, которое необходимо отправить в программу "SerialPlot"
+ * 						конец передаваемых в функцию параметров
+ * @return	Размер получившегося пакета данных в байтах
  */
 uint16_t DI_CopyDataForSerialPlot_f32(
     DI_data_for_serial_plot_s *pStruct,
@@ -50,7 +50,7 @@ uint16_t DI_CopyDataForSerialPlot_f32(
 
 	float dataTmp = data;
 
-	/* Счетчик каличества переменных типа "float" */
+	/* Счетчик количества переменных типа "float" */
 	size_t i = 0;
 
 	while (dataTmp != (float) 0xAAAAAAAA)
