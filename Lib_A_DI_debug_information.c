@@ -5,6 +5,7 @@
  * @date 	10.04.2018
  * @brief	Библиотека содержит функции для формирования пакета данных, который
  * 			будет переведен программной SerialPlot в график
+ * 		@see	https://hackaday.io/project/5334-serialplot-realtime-plotting-software
  */
 
 /*#### |Begin| --> Секция - "Include" ########################################*/
@@ -25,7 +26,7 @@
  * @brief	Функция выполняет копирование переменных в структуру типа
  * 			"DI_data_for_serial_plot_s" для дальнейшей отправки в программу "SerialPlot"
  * @param[out]	*pStruct:	Указатель на структуру в которую необходимо скопировать
- * 						переменные
+ * 							переменные
  * @param[in]	data: 	Переменная которую необходимо скопировать в стуктуру
  * 						типа "DI_data_for_serial_plot_s"
  * @param[in]	...		Переменное число параметров, которое необходимо скопировать
@@ -55,17 +56,18 @@ uint16_t DI_CopyDataForSerialPlot_f32(
 
 	while (dataTmp != (float) 0xAAAAAAAA)
 	{
-		pStruct->dataArr[i] = dataTmp;
+		pStruct->dataArr[i] = (float) dataTmp;
 		i++;
 		dataTmp = va_arg(pInParam,
 		                 double);
 	}
 
-	pStruct->frameSize = i * 4;
+	pStruct->frameSize = i * sizeof(float);
 
 	va_end(pInParam);
 
-	/* Возвращает количество байт, которое необходимо отправить по шине данных */
+	/* Возвращает количество байт, которое необходимо отправить в программу
+	 * SerialPlot */
 	return (i * 4)
 	       + sizeof(pStruct->frameStart)
 	       + sizeof(pStruct->frameSize);
