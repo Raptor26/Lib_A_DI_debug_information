@@ -1,8 +1,10 @@
 /**
- * File:   %<%NAME%>%.%<%EXTENSION%>%
- * Author: %<%USER%>%
- *
- * Created on %<%DATE%>%, %<%TIME%>%
+ * @file   	Lib_A_DI_debug_information.c
+ * @author 	Isaev Mickle
+ * @version	beta
+ * @date 	10.04.2018
+ * @brief	Библиотека содержит функции для формирования пакета данных, который
+ * 			будет переведен программной SerialPlot в график
  */
 
 /*#### |Begin| --> Секция - "Include" ########################################*/
