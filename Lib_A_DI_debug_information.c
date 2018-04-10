@@ -1,12 +1,12 @@
 /**
  * @file   	Lib_A_DI_debug_information.c
  * @author 	Isaev Mickle
- * @version	beta
+ * @version	v1.0
  * @date 	10.04.2018
- * @brief	Библиотека содержит функции для формирования пакета данных, который
+ * @brief	Файл содержит функции для формирования пакета данных, который
  * 			будет переведен программной SerialPlot в график/графики (в
  * 			зависимости от количества переданных параметров)
- * 		@see	Скачать программу SerialPlot можно отсюд:
+ * 		@see	Скачать программу SerialPlot можно отсюда:
  * 				https://hackaday.io/project/5334-serialplot-realtime-plotting-software
  *
  * @code
