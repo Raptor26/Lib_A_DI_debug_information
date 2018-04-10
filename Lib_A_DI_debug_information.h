@@ -1,10 +1,9 @@
 /**
  * @file   	Lib_A_DI_debug_information.h
  * @author 	Isaev Mickle
- * @version	beta
+ * @version	v1.0
  * @date 	10.04.2018
- * @brief	Библиотека содержит функции для формирования пакета данных, который
- * 			будет переведен программной SerialPlot в график
+ * @brief	Файл содержит описание структур и перечисляемых типов
  */
 
 #ifndef LIB_A_DI_DEBUG_INFORMATION_H
