@@ -1,252 +1,60 @@
 /**
- * File:   %<%NAME%>%.%<%EXTENSION%>%
- * Author: %<%USER%>%
- *
- * Created on %<%DATE%>%, %<%TIME%>%
+ * @file   	Lib_A_DI_debug_information.h
+ * @author 	Isaev Mickle
+ * @version	v1.0
+ * @date 	10.04.2018
+ * @brief	Файл содержит описание структур и перечисляемых типов
  */
 
 #ifndef LIB_A_DI_DEBUG_INFORMATION_H
 #define	LIB_A_DI_DEBUG_INFORMATION_H
 
-/******************************************************************************/
-//  Секция include (подключаем заголовочные файлы используемых модулей)
-/*============================================================================*/
-//  Стандартные библиотеки языка С
+/*#### |Begin| --> Секция - "Include" ########################################*/
+/*==== |Begin| --> Секция - "C libraries" ====================================*/
 #include <stdint.h>
-#include <stdio.h>
-#include <stdbool.h>
 #include <string.h>
 #include <stdarg.h>
-/*============================================================================*/
+/*==== |End  | <-- Секция - "C libraries" ====================================*/
 
+/*==== |Begin| --> Секция - "MK peripheral libraries" ========================*/
+/*==== |End  | <-- Секция - "MK peripheral libraries" ========================*/
 
-/*============================================================================*/
-//  Библиотеки для работы с периферией микроконтроллера
-/*============================================================================*/
-
-
-/*============================================================================*/
-//  Внешние модули
+/*==== |Begin| --> Секция - "Extern libraries" ===============================*/
 #include "../Lib_A_CRC_cyclic_redundancy_check/Lib_A_CRC_cyclic_redundancy_check.h"
-/*============================================================================*/
-/******************************************************************************/
+/*==== |End  | <-- Секция - "Extern libraries" ===============================*/
+/*#### |End  | <-- Секция - "Include" ########################################*/
 
+/*#### |Begin| --> Секция - "Определение констант" ###########################*/
+#define DI_TERMINAL_SYMBOL	0xAAAAAAAA ///<		Значение терминального символа
+/*#### |End  | <-- Секция - "Определение констант" ###########################*/
 
-/******************************************************************************/
-//  Секция определения констант
-/******************************************************************************/
+/*#### |Begin| --> Секция - "Определение типов" ##############################*/
+typedef struct
+{
+	uint16_t frameStart;  ///< 	Символ старта пакета данных
+	uint8_t frameSize;  ///< 	Количество полезных байтов
 
+	float dataArr[40];  ///<	Данные, по которым SerialPlot построит графики
 
-/******************************************************************************/
-//  Секция определения типов
-//------------------------------------------------------------------------------
+	uint8_t crc;  ///<			Конрольная сумма пакета данных;
+}__attribute__((__packed__)) DI_data_for_serial_plot_s;
+/*#### |End  | <-- Секция - "Определение типов" ##############################*/
 
-typedef struct {
-    uint8_t beginMessageId;
-    uint16_t messageType;
-    float gyrArr[3];
-    float accArr[3];
-    float magArr[3];
-    uint16_t crcMessage;
-    char terminator;
-} __attribute__((__packed__)) DI_gyr_acc_mag_package_s;
+/*#### |Begin| --> Секция - "Определение глобальных переменных" ##############*/
+/*#### |End  | <-- Секция - "Определение глобальных переменных" ##############*/
 
-#define DI_GYR_ACC_MAG_PACKAGE_S_LENGHT                     sizeof(DI_gyr_acc_mag_package_s)
-#define DI_GYR_ACC_MAG_PACKAGE_S_CRC_BYTES_NUMB             2
-#define DI_GYR_ACC_MAG_PACKAGE_S_BYTES_NUMB_AFTER_CRC       1
-//------------------------------------------------------------------------------
+/*#### |Begin| --> Секция - "Прототипы глобальных функций" ###################*/
+extern uint16_t DI_CopyDataForSerialPlot_f32(
+    DI_data_for_serial_plot_s *pStruct,
+    float data,
+    ...);
+/*#### |End  | <-- Секция - "Прототипы глобальных функций" ###################*/
 
-
-//------------------------------------------------------------------------------
-
-typedef struct {
-    /**
-     * Условие старта пакета данных "Start frame"
-     */
-    uint8_t beginMessageId;
-
-    /**
-     * Количество полезных байтов данных;
-     */
-    uint8_t numbMessageBytes;
-
-    /**
-     * Массив угловых скоростей по 3-м осям;
-     */
-    float gyrArr[3];
-
-    /**
-     * Массив линейных ускрений по 3-м осям;
-     */
-    float accArr[3];
-
-    /**
-     * Массив магнитного поля по 3-м осям;
-     */
-    float magArr[3];
-
-    /**
-     * Массив компонент кватерниона;
-     */
-    float quatArr[4];
-
-    /**
-     *  Массив углов Эйлера;
-     */
-    float eulerAnglArr[3];
-
-    /**
-     * Коэффициент пропорциональной коррекции;
-     */
-    float kProp;
-
-    /**
-     * Норма акселерометров
-     */
-    float accNorm;
-
-    /**
-     * Массив дрейфа гироскопов по 3-м осям;
-     */
-    float gyrBiasArr[3];
-
-    /**
-     * Контрольная сумма пакета данных без учета следующих полей структуры:
-     * - "beginMessageId"
-     * - "numbMessageBytes"
-     */
-    uint8_t crc;
-} __attribute__((__packed__)) DI_inert_sens_package_for_serial_plot_s;
-
-#define DI_INERT_SENS_PACKAGE_FOR_SERIAL_PLOT_S_LENGHT                 sizeof(DI_inert_sens_package_for_serial_plot_s)
-#define DI_INERT_SENS_PACKAGE_FOR_SERIAL_PLOT_S_CRC_BYTES_NUMB         1
-#define DI_INERT_SENS_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC   0
-//------------------------------------------------------------------------------
-
-
-//------------------------------------------------------------------------------
-
-typedef struct {
-    uint8_t beginMessageId;
-    uint8_t numbMessageBytes;
-
-    float currentAbsoluteAngel;
-    float currentAngelInElectAngel;
-    float needAngelInElectAngel;
-    float needAngelElectAndCurrentAngelDiff;
-    float amplitudeCurrent;
-    float needAbsoluteAngelAndCurrentAngelDiff;
-    float angularSpeed;
-    float angularSpeed2;
-    uint8_t crc;
-} __attribute__((__packed__)) DI_vect_motor_control_package_for_serial_plot_s;
-
-#define DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_LENGHT                  sizeof (DI_vect_motor_control_package_for_serial_plot_s)
-#define DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_CRC_BYTES_NUMB          1
-#define DI_VECT_MOTOR_CONTROL_PACKAGE_FOR_SERIAL_PLOT_S_BYTES_NUMB_AFTER_CRC    0
-//------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------
-
-typedef struct {
-    uint8_t beginMessageId;
-    uint8_t numbMessageBytes;
-
-    float dataWithOutFilt;
-    float iir_lowPass10Hz;
-    float iir_lowPass50Hz;
-    float iir_lowPass100Hz;
-    float iir_lowPass150Hz;
-    float iir_lowPass200Hz;
-    float iir_lowPass250Hz;
-    float iir_lowPass300Hz;
-    float iir_lowPass350Hz;
-    float iir_lowPass400Hz;
-
-    uint8_t crc;
-} __attribute__((__packed__)) DI_win_filter_comp_for_serial_plot_s;
-
-#define DI_WIN_FILTER_COMP_FOR_SERIAL_PLOT_S_LENGHT				sizeof (DI_win_filter_comp_for_serial_plot_s)
-#define DI_WIN_FILTER_COMP_FOR_SERIAL_PLOT_S_CRC_BYTES_NUMB		1
-#define DI_WIN_FILTER_COMP_FOR_SERIAL_PLOT_S_BYTES_AFTER_CRC	0
-//------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------
-
-typedef struct {
-    uint8_t beginMessageId;
-    uint8_t numbMessageBytes;
-
-    float dataArr[40];
-
-    uint8_t crc;
-} __attribute__((__packed__)) DI_data_for_serial_plot_s;
-//------------------------------------------------------------------------------
-/******************************************************************************/
-
-
-/******************************************************************************/
-//  Секция определения глобальных переменных
-/******************************************************************************/
-
-
-/******************************************************************************/
-//  Секция прототипов глобальных функций
-//  Для отладки <системы ориентации>;
-extern uint8_t DI_CopyGyrAccMagDataInStruct(
-        DI_gyr_acc_mag_package_s *pPackageStruct,
-        float *pGyrArr,
-        float *pAccArr,
-        float *pMagArr);
-
-extern uint8_t DI_CopyInertSensDataInStructForSerialPlot(
-        DI_inert_sens_package_for_serial_plot_s *pPackageStruct,
-        float *pGyrArr,
-        float *pAccArr,
-        float *pMagArr,
-        float *pQuatArr,
-        float *pEulerAngleArr,
-        float *kProp,
-        float *accNorm,
-        float *gyrBiasArr);
-
-//  Для отладки <векторного управления> 3-х фазным электродвигателем;
-extern uint8_t DI_CopyVectMotorControlDataInStructForSerialPlot(
-        DI_vect_motor_control_package_for_serial_plot_s *pPackageStruct,
-        float currentAbsoluteAngel,
-        float currentAngelInElectAngel,
-        float needAngelInElectAngel,
-        float needAngelAndCurrentAngelDiff,
-        float amplitudeCurrent,
-        float needAbsoluteAngelAndCurrentAngelDiff,
-        float angularSpeed,
-        float angularSpeed2);
-
-extern uint8_t DI_CopyWinFiltDataInStructForSerialPlot(
-        DI_win_filter_comp_for_serial_plot_s *pPackageStruct,
-        float dataWithOutFilt,
-        float iir_lowPass10Hz,
-        float iir_lowPass50Hz,
-        float iir_lowPass100Hz,
-        float iir_lowPass150Hz,
-        float iir_lowPass200Hz,
-        float iir_lowPass250Hz,
-        float iir_lowPass300Hz,
-        float iir_lowPass350Hz,
-        float iir_lowPass400Hz);
-
-extern size_t DI_CopyDataForSerialPlot_f32(DI_data_for_serial_plot_s *pStruct,
-        float data,
-        ...);
-/******************************************************************************/
-
-
-/******************************************************************************/
-//  Секция определения макросов
-/******************************************************************************/
+/*#### |Begin| --> Секция - "Определение макросов" ###########################*/
+/*#### |End  | <-- Секция - "Определение макросов" ###########################*/
 
 #endif	/* LIB_A_DI_DEBUG_INFORMATION_H */
 
-////////////////////////////////////////////////////////////////////////////////
-//  END OF FILE
-////////////////////////////////////////////////////////////////////////////////
+/*############################################################################*/
+/*################################ END OF FILE ###############################*/
+/*############################################################################*/
