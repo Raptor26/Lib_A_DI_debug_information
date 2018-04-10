@@ -4,8 +4,10 @@
  * @version	beta
  * @date 	10.04.2018
  * @brief	Библиотека содержит функции для формирования пакета данных, который
- * 			будет переведен программной SerialPlot в график
- * 		@see	Скачать можно отсюда https://hackaday.io/project/5334-serialplot-realtime-plotting-software
+ * 			будет переведен программной SerialPlot в график/графики (в
+ * 			зависимости от количества переданных параметров)
+ * 		@see	Скачать программу SerialPlot можно отсюд:
+ * 				https://hackaday.io/project/5334-serialplot-realtime-plotting-software
  *
  * @code
  * 		// Пример использования функции DI_CopyDataForSerialPlot_f32()
@@ -26,7 +28,7 @@
  * 											 					 (float) data3,
  * 											 					 (float) data4,
  * 											 					 (float) data5,
- * 											 					 (float) 0xAAAAAAAA)
+ * 											 					 (float) DI_TERMINAL_SYMBOL)
  *
  * 				// Передача пакета данных по интерфейсу UART в ПК
  * 				UART_Tramsmitter((uint8_t*) &DI_CopyDataForSerialPlot_f32,
@@ -84,7 +86,7 @@ uint16_t DI_CopyDataForSerialPlot_f32(
 	/* Счетчик количества переменных типа "float" */
 	size_t i = 0;
 
-	while (dataTmp != (float) 0xAAAAAAAA)
+	while (dataTmp != (float) DI_TERMINAL_SYMBOL)
 	{
 		pStruct->dataArr[i] = (float) dataTmp;
 		i++;

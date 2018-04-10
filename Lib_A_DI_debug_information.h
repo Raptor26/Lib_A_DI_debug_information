@@ -13,8 +13,6 @@
 /*#### |Begin| --> Секция - "Include" ########################################*/
 /*==== |Begin| --> Секция - "C libraries" ====================================*/
 #include <stdint.h>
-#include <stdio.h>
-#include <stdbool.h>
 #include <string.h>
 #include <stdarg.h>
 /*==== |End  | <-- Секция - "C libraries" ====================================*/
