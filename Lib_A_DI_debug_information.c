@@ -54,6 +54,7 @@
 /*#### |End  | <-- Секция - "Прототипы локальных функций" ####################*/
 
 /*#### |Begin| --> Секция - "Описание глобальных функций" ####################*/
+
 /**
  * @brief	Функция выполняет копирование переменных в структуру типа
  * 			"DI_data_for_serial_plot_s" для дальнейшей отправки в программу "SerialPlot"
@@ -65,44 +66,45 @@
  * 						в стуктуру типа "DI_data_for_serial_plot_s"
  * @param[in]	0xAAAAAAAA:	Терминальный символ, по которому функция определяет
  * 							конец передаваемых в функцию параметров
+ *      @note   См. применр вызова функции DI_CopyDataForSerialPlot_f32()
  * @return	Размер получившегося пакета данных в байтах
  */
-uint16_t DI_CopyDataForSerialPlot_f32(
-    DI_data_for_serial_plot_s *pStruct,
-    float data,
-    ...)
+uint16_t DI_CopyDataForSerialPlot_f32
+(DI_data_for_serial_plot_s *pStruct,
+ float data,
+ ...)
 {
-	pStruct->frameStart = 0xAAAA;
+    pStruct->frameStart = DI_START_FRAME_SYMBOL;
 
-	/* Объявление указателя на переменное число параметров функции */
-	va_list pInParam;
+    /* Объявление указателя на переменное число параметров функции */
+    va_list pInParam;
 
-	/* Инициализация указателя */
-	va_start(pInParam,
-	         data);
+    /* Инициализация указателя */
+    va_start(pInParam,
+             data);
 
-	float dataTmp = data;
+    float dataTmp = data;
 
-	/* Счетчик количества переменных типа "float" */
-	size_t i = 0;
+    /* Счетчик количества переменных типа "float" */
+    size_t i = 0;
 
-	while (dataTmp != (float) DI_TERMINAL_SYMBOL)
-	{
-		pStruct->dataArr[i] = (float) dataTmp;
-		i++;
-		dataTmp = va_arg(pInParam,
-		                 double);
-	}
+    while (dataTmp != (float) DI_TERMINAL_SYMBOL)
+    {
+        pStruct->dataArr[i] = (float) dataTmp;
+        i++;
+        dataTmp = va_arg(pInParam,
+                         double);
+    }
 
-	pStruct->frameSize = i * sizeof(float);
+    pStruct->frameSize = i * sizeof (float);
 
-	va_end(pInParam);
+    va_end(pInParam);
 
-	/* Возвращает количество байт, которое необходимо отправить в программу
-	 * SerialPlot */
-	return (i * 4)
-	       + sizeof(pStruct->frameStart)
-	       + sizeof(pStruct->frameSize);
+    /* Возвращает количество байт, которое необходимо отправить в программу
+     * SerialPlot */
+    return (i * 4)
+            + sizeof (pStruct->frameStart)
+            + sizeof (pStruct->frameSize);
 }
 /*#### |End  | <-- Секция - "Описание глобальных функций" ####################*/
 
