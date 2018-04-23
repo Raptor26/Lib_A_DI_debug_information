@@ -34,7 +34,7 @@ typedef struct {
     uint16_t frameStart; ///< 	Символ старта пакета данных
     uint8_t frameSize; ///< 	Количество полезных байтов
 
-    float dataArr[40]; ///<	Данные, по которым SerialPlot построит графики
+    float dataArr[40]; ///<   	Данные, по которым SerialPlot построит графики
 
     uint8_t crc; ///<			Конрольная сумма пакета данных;
 } __attribute__((__packed__)) DI_data_for_serial_plot_s;
