@@ -25,18 +25,23 @@
 /*#### |End  | <-- Секция - "Include" ########################################*/
 
 /*#### |Begin| --> Секция - "Определение констант" ###########################*/
+#if defined (DI_MAX_PLOTS_IN_PACKAGE)
+#else
+#error "Set max numb of plots in package"
+#endif
+
 #define DI_START_FRAME_SYMBOL   0xAAAAAAAA ///<     Start frame symbol
 #define DI_TERMINAL_SYMBOL      0xAAAAAAAA ///<		Terminal symbol
 /*#### |End  | <-- Секция - "Определение констант" ###########################*/
 
 /*#### |Begin| --> Секция - "Определение типов" ##############################*/
 typedef struct {
-    uint16_t frameStart; ///< 	Символ старта пакета данных
-    uint8_t frameSize; ///< 	Количество полезных байтов
+	uint16_t frameStart; ///< 	Символ старта пакета данных
+	uint8_t frameSize; ///< 	Количество полезных байтов
 
-    float dataArr[40]; ///<   	Данные, по которым SerialPlot построит графики
+	float dataArr[DI_MAX_PLOTS_IN_PACKAGE]; ///<	Данные, по которым SerialPlot построит графики
 
-    uint8_t crc; ///<			Конрольная сумма пакета данных;
+	uint8_t crc; ///<			Конрольная сумма пакета данных;
 } __attribute__((__packed__)) DI_data_for_serial_plot_s;
 /*#### |End  | <-- Секция - "Определение типов" ##############################*/
 
@@ -45,9 +50,9 @@ typedef struct {
 
 /*#### |Begin| --> Секция - "Прототипы глобальных функций" ###################*/
 extern uint16_t DI_CopyDataForSerialPlot_f32(
-        DI_data_for_serial_plot_s *pStruct,
-        float data,
-        ...);
+	DI_data_for_serial_plot_s *pStruct,
+	float data,
+	...);
 /*#### |End  | <-- Секция - "Прототипы глобальных функций" ###################*/
 
 /*#### |Begin| --> Секция - "Определение макросов" ###########################*/
