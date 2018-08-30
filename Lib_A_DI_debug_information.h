@@ -25,7 +25,7 @@
 /*#### |End  | <-- Секция - "Include" ########################################*/
 
 /*#### |Begin| --> Секция - "Определение констант" ###########################*/
-#if defined (DI_MAX_PLOTS_IN_PACKAGE)
+#if defined (__DI_MAX_PLOTS_IN_PACKAGE__)
 #else
 #error "Set max numb of plots in package"
 #endif
@@ -39,7 +39,7 @@ typedef struct {
 	uint16_t frameStart; ///< 	Символ старта пакета данных
 	uint8_t frameSize; ///< 	Количество полезных байтов
 
-	float dataArr[DI_MAX_PLOTS_IN_PACKAGE]; ///<	Данные, по которым SerialPlot построит графики
+	float dataArr[__DI_MAX_PLOTS_IN_PACKAGE__]; ///<	Данные, по которым SerialPlot построит графики
 
 	uint8_t crc; ///<			Конрольная сумма пакета данных;
 } __attribute__((__packed__)) DI_data_for_serial_plot_s;

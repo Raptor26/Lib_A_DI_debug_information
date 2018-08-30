@@ -98,7 +98,7 @@ DI_CopyDataForSerialPlot_f32(
 						  double);
 
 		/* Проверка выхода за пределы массива */
-		if (i >= DI_MAX_PLOTS_IN_PACKAGE)
+		if (i >= __DI_MAX_PLOTS_IN_PACKAGE__)
 		{
 			break;
 		}
